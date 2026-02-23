@@ -5,11 +5,12 @@ const grille_jeu = document.querySelector("#grille_de_jeu");
 
 function RazGrille() {
 	for (let i = 0; i < grille_jeu.children.length; i++) {
-		hideBushHTML(i);
+		displayBushHTML(i);
+		clickGrille(i);
 	}
 }
 
-function hideBushHTML(box_num) {
+function displayBushHTML(box_num) {
 	const box = grille_jeu.children[box_num];
 	const image = box.firstElementChild;
 	image.classList.remove("pokemon", "pokeball");
@@ -25,20 +26,44 @@ function displayPokeball(box_num) {
 	image.src = "./assets/pokeball.png";
 }
 
-RazGrille();
-displayPokeball(5);
-displayPokemon(
-	3,
-	"https://img.pokemondb.net/sprites/scarlet-violet/normal/charmander.png",
-);
+function displayPokemon(box_num, sprite) {
+	const box = grille_jeu.children[box_num];
+	const image = box.firstElementChild;
+	console.log(sprite);
+	image.classList.remove("pokeball", "bush");
+	image.classList.add("pokemon");
+	image.src = sprite;
+}
 
-// function clicBuisson() {
-//     for (let bush of grille_pokemon.children) {
-//         bush.addEventListener("click" , function () {
-//             bush.
-//         })
-//     }
-// }
+function clickBush(box_num, sprite) {
+	const box = grille_jeu.children[box_num];
+	box.addEventListener("click", function () {
+		displayPokemon(box_num, sprite);
+	});
+}
+
+function clickGrille(box_num) {
+	const box = grille_jeu.children[box_num];
+	console.log(box);
+
+	box.addEventListener("click", function () {
+		clickBush(
+			box,
+			"https://img.pokemondb.net/sprites/scarlet-violet/normal/charmander.png",
+		);
+	});
+}
+
+RazGrille();
+// displayPokeball(5);
+// displayPokemon(
+// 	3,
+// 	"https://img.pokemondb.net/sprites/scarlet-violet/normal/charmander.png",
+// );
+
+// clickBush(3,
+//     "https://img.pokemondb.net/sprites/scarlet-violet/normal/charmander.png",
+// );
 
 // async function getData () {
 //     const url = "http://127.0.0.1:5500/data/pokemon.json";
