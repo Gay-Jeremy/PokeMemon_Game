@@ -6,7 +6,7 @@ const grille_jeu = document.querySelector("#grille_de_jeu");
 function RazGrille() {
 	for (let i = 0; i < grille_jeu.children.length; i++) {
 		displayBushHTML(i);
-		clickGrille(i);
+		
 	}
 }
 
@@ -42,19 +42,20 @@ function clickBush(box_num, sprite) {
 	});
 }
 
-function clickGrille(box_num) {
-	const box = grille_jeu.children[box_num];
-	console.log(box);
-
-	box.addEventListener("click", function () {
-		clickBush(
-			box,
-			"https://img.pokemondb.net/sprites/scarlet-violet/normal/charmander.png",
-		);
+async function clickGrille() {
+	for (let i = 0; i < grille_jeu.children.length; i++) {
+		const resultat = await getData()
+		const bush = grille_jeu.children[i];
+		const sprite = resultat[i].sprite
+		bush.addEventListener("click", function () {
+		displayPokemon(i, sprite);
 	});
+	}
 }
 
 RazGrille();
+clickGrille()
+
 // displayPokeball(5);
 // displayPokemon(
 // 	3,
@@ -65,19 +66,19 @@ RazGrille();
 //     "https://img.pokemondb.net/sprites/scarlet-violet/normal/charmander.png",
 // );
 
-// async function getData () {
-//     const url = "http://127.0.0.1:5500/data/pokemon.json";
-//     try {
-//     const reponse = await fetch(url);
-//     if (!reponse.ok) {
-//         throw new Error(`Statut de réponse : ${reponse.status}`);
-//     }
+async function getData() {
+    const url = "http://127.0.0.1:5500/data/pokemon.json";
+    try {
+        const reponse = await fetch(url);
+        if (!reponse.ok) {
+            throw new Error(`Statut de réponse : ${reponse.status}`);
+        }
+        const resultat = await reponse.json();
+        return resultat; // on retourne bien les données
+    } catch (erreur) {
+        console.error(erreur.message);
+        return []; // retourner un tableau vide si erreur
+    }
+}
 
-//     const resultat = await reponse.json();
-//     console.log(resultat);
-//     } catch (erreur) {
-//     console.error(erreur.message);
-//     }
-// }
 
-// getData()
